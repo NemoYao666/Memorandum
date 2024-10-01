@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	_ "micro-todoList/app/gateway/cmd/docs"
+	_ "micro-todoList/app/docs"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -43,3 +43,6 @@ func NewRouter() *gin.Engine {
 	}
 	return ginRouter
 }
+
+// 生成swagger文档
+// swag init -g .\app\gateway\cmd\main.go --dir . -o .\app\docs

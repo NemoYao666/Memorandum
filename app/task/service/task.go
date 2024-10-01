@@ -27,6 +27,17 @@ func GetTaskSrv() *TaskSrv {
 }
 
 // CreateTask 创建备忘录，将备忘录信息生产，放到rabbitMQ消息队列中
+//
+//	@Summary		CreateTask
+//	@Description	CreateTaskDescription
+//	@Tags			task
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string			true	"token"
+//	@Param			req				body		pb.TaskRequest	true	"task"
+//	@Success		200				{object}	map[string]interface{}
+//	@Failure		500				{string}	string	"bad request"
+//	@Router			/api/v1/task [POST]
 func (t *TaskSrv) CreateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
 	body, _ := json.Marshal(req) // title，content
 	resp.Code = e.SUCCESS
@@ -51,6 +62,16 @@ func TaskMQ2MySQL(ctx context.Context, req *pb.TaskRequest) error {
 }
 
 // GetTasksList 实现备忘录服务接口 获取备忘录列表
+//
+//	@Summary		GetTasksList
+//	@Description	GetTasksListDescription
+//	@Tags			task
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"token"
+//	@Success		200				{object}	map[string]interface{}
+//	@Failure		500				{string}	string	"bad request"
+//	@Router			/api/v1/tasks [get]
 func (t *TaskSrv) GetTasksList(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskListResponse) (err error) {
 	resp.Code = e.SUCCESS
 	if req.Limit == 0 {
@@ -74,6 +95,17 @@ func (t *TaskSrv) GetTasksList(ctx context.Context, req *pb.TaskRequest, resp *p
 }
 
 // GetTask 获取详细的备忘录
+//
+//	@Summary		GetTask
+//	@Description	GetTaskDescription
+//	@Tags			task
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"token"
+//	@Param			id				path		string	true	"id"
+//	@Success		200				{object}	map[string]interface{}
+//	@Failure		500				{string}	string	"bad request"
+//	@Router			/api/v1/task/{id} [get]
 func (t *TaskSrv) GetTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
 	resp.Code = e.SUCCESS
 	r, err := dao.NewTaskDao(ctx).GetTaskByTaskIdAndUserId(req.Id, req.Uid)
@@ -88,6 +120,18 @@ func (t *TaskSrv) GetTask(ctx context.Context, req *pb.TaskRequest, resp *pb.Tas
 }
 
 // UpdateTask 修改备忘录
+//
+//	@Summary		UpdateTask
+//	@Description	UpdateTaskDescription
+//	@Tags			task
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"token"
+//	@Param			id				path		string	true	"id"
+//	@Param			req				body		pb.TaskRequest	true	"task"
+//	@Success		200				{object}	map[string]interface{}
+//	@Failure		500				{string}	string	"bad request"
+//	@Router			/api/v1/task/{id} [PUT]
 func (t *TaskSrv) UpdateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
 	// 查找该用户的这条信息
 	resp.Code = e.SUCCESS
@@ -102,6 +146,17 @@ func (t *TaskSrv) UpdateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.
 }
 
 // DeleteTask 删除备忘录
+//
+//	@Summary		DeleteTask
+//	@Description	DeleteTaskDescription
+//	@Tags			task
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"token"
+//	@Param			id				path		string	true	"id"
+//	@Success		200				{object}	map[string]interface{}
+//	@Failure		500				{string}	string	"bad request"
+//	@Router			/api/v1/task/{id} [DELETE]
 func (t *TaskSrv) DeleteTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
 	resp.Code = e.SUCCESS
 	err = dao.NewTaskDao(ctx).DeleteTaskByIdAndUserId(req.Id, req.Uid)

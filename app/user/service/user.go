@@ -35,6 +35,17 @@ func GetUserSrvHungry() *UserSrv {
 	return UserSrvIns
 }
 
+// UserLogin
+//
+//	@Summary		UserLogin
+//	@Description	UserLoginDescription
+//	@Tags			user
+//	@Accept			json
+//	@Produce		json
+//	@Param			req	body		pb.UserRequest	true	"pb.UserRequest"
+//	@Success		200	{object}	map[string]interface{}
+//	@Failure		500	{string}	string	"bad request"
+//	@Router			/api/v1/user/login [post]
 func (u *UserSrv) UserLogin(ctx context.Context, req *pb.UserRequest, resp *pb.UserDetailResponse) (err error) {
 	resp.Code = e.SUCCESS
 	user, err := dao.NewUserDao(ctx).FindUserByUserName(req.UserName)
@@ -59,6 +70,17 @@ func (u *UserSrv) UserLogin(ctx context.Context, req *pb.UserRequest, resp *pb.U
 	return
 }
 
+// UserRegister
+//
+//	@Summary		UserRegister
+//	@Description	UserRegisterDescription
+//	@Tags			user
+//	@Accept			json
+//	@Produce		json
+//	@Param			req	body		pb.UserRequest	true	"pb.UserRequest"
+//	@Success		200	{object}	map[string]interface{}
+//	@Failure		500	{string}	string	"bad request"
+//	@Router			/api/v1/user/register [post]
 func (u *UserSrv) UserRegister(ctx context.Context, req *pb.UserRequest, resp *pb.UserDetailResponse) (err error) {
 	if req.Password != req.PasswordConfirm {
 		err = errors.New("两次密码输入不一致")
