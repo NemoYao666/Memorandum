@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/go-micro/plugins/v4/registry/etcd"
+	"github.com/go-micro/plugins/v4/wrapper/monitoring/prometheus"
 	"github.com/go-micro/plugins/v4/wrapper/trace/opentracing"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/registry"
-	"micro-todoList/app/gateway/wrappers"
+	"micro-todoList/app/common"
 	"micro-todoList/app/user/repository/db/dao"
 	"micro-todoList/app/user/service"
 	"micro-todoList/config"
@@ -22,8 +23,10 @@ func main() {
 	)
 
 	// 初始化 Tracer
-	tracer := wrappers.GetTracer(config.UserServiceName, config.UserServiceAddress)
+	tracer := common.GetTracer(config.UserServiceName, config.UserServiceAddress)
 	tracerHandler := opentracing.NewHandlerWrapper(tracer)
+	// 初始化 Prometheus
+	common.PrometheusBoot(9092)
 
 	// 得到一个微服务实例
 	microService := micro.NewService(
@@ -31,6 +34,7 @@ func main() {
 		micro.Address(config.UserServiceAddress),
 		micro.Registry(etcdReg), // etcd注册件
 		micro.WrapHandler(tracerHandler),
+		micro.WrapHandler(prometheus.NewHandlerWrapper()),
 	)
 	// 结构命令行参数，初始化
 	microService.Init()

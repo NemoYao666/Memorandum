@@ -5,9 +5,9 @@ import (
 	"github.com/go-micro/plugins/v4/registry/etcd"
 	"go-micro.dev/v4/registry"
 	"go-micro.dev/v4/web"
+	"micro-todoList/app/common"
 	"micro-todoList/app/gateway/router"
 	"micro-todoList/app/gateway/rpc"
-	"micro-todoList/app/gateway/wrappers"
 	"micro-todoList/app/user/repository/cache"
 	"micro-todoList/config"
 	log "micro-todoList/pkg/logger"
@@ -23,7 +23,9 @@ func main() {
 		registry.Addrs(fmt.Sprintf("%s:%s", config.EtcdHost, config.EtcdPort)),
 	)
 	// 初始化 Tracer
-	tracer := wrappers.GetTracer(config.GateWayServiceName, config.GateWayServiceAddress)
+	tracer := common.GetTracer(config.GateWayServiceName, config.GateWayServiceAddress)
+	// 初始化 Prometheus
+	common.PrometheusBoot(9094)
 
 	// 创建微服务实例，使用gin暴露http接口并注册到etcd
 	server := web.NewService(

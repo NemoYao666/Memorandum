@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"gorm.io/gorm"
-
+	"micro-todoList/app/user/metrics"
 	"micro-todoList/app/user/repository/db/dao"
 	"micro-todoList/app/user/repository/db/model"
 	"micro-todoList/idl/pb"
@@ -67,6 +67,8 @@ func (u *UserSrv) UserLogin(ctx context.Context, req *pb.UserRequest, resp *pb.U
 	}
 
 	resp.UserDetail = BuildUser(user)
+	metrics.QueryUserLoginCounter.WithLabelValues("counts").Inc()
+
 	return
 }
 

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"micro-todoList/app/task/metrics"
 	"sync"
 
 	"micro-todoList/app/task/repository/db/dao"
@@ -91,6 +92,9 @@ func (t *TaskSrv) GetTasksList(ctx context.Context, req *pb.TaskRequest, resp *p
 	}
 	resp.TaskList = taskRes
 	resp.Count = uint32(count)
+
+	metrics.QueryGetTaskListCounter.WithLabelValues("counts").Inc()
+
 	return
 }
 

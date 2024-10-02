@@ -33,9 +33,9 @@ var (
 	TaskClientName        string
 	TaskServiceAddress    string
 
-	ZipkinHost string
-	ZipkinPort string
-	ZipkinUrl  string
+	ZipkinUrl string
+
+	PrometheusHost string
 
 	RedisHost     string
 	RedisPort     string
@@ -53,6 +53,7 @@ func Init() {
 	LoadRabbitMQ(file)
 	LoadServer(file)
 	LoadZipkin(file)
+	LoadPrometheus(file)
 	LoadRedisData(file)
 }
 
@@ -91,9 +92,11 @@ func LoadServer(file *ini.File) {
 }
 
 func LoadZipkin(file *ini.File) {
-	ZipkinHost = file.Section("zipkin").Key("ZipkinHost").String()
-	ZipkinPort = file.Section("zipkin").Key("ZipkinPort").String()
 	ZipkinUrl = file.Section("zipkin").Key("ZipkinUrl").String()
+}
+
+func LoadPrometheus(file *ini.File) {
+	PrometheusHost = file.Section("prometheus").Key("PrometheusHost").String()
 }
 
 func LoadRedisData(file *ini.File) {

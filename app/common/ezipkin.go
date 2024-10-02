@@ -1,4 +1,4 @@
-package wrappers
+package common
 
 import (
 	"github.com/opentracing/opentracing-go"

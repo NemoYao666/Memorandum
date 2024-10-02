@@ -23,8 +23,20 @@ EtcdHost = localhost
 EtcdPort = 2379
 
 [server]
+GateWayServiceName = httpService
+GateWayServiceAddress = 127.0.0.1:4000
+UserServiceName = rpcUserService
+UserClientName = userService.client
 UserServiceAddress = 127.0.0.1:8082
+TaskServiceName = rpcTaskService
+TaskClientName = taskService.client
 TaskServiceAddress = 127.0.0.1:8083
+
+[zipkin]
+ZipkinUrl  = http://127.0.0.1:9411/api/v2/spans
+
+[prometheus]
+PrometheusHost = 0.0.0.0
 
 [redis]
 RedisHost = localhost

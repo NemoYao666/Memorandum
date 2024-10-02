@@ -3,6 +3,7 @@ package rpc
 import (
 	"github.com/go-micro/plugins/v4/wrapper/trace/opentracing"
 	"go-micro.dev/v4"
+	"micro-todoList/app/common"
 	"micro-todoList/config"
 
 	"micro-todoList/app/gateway/wrappers"
@@ -16,7 +17,7 @@ var (
 
 // InitRPC 初始化RPC客户端
 func InitRPC() {
-	userTracer := wrappers.GetTracer(config.UserClientName, config.UserServiceAddress)
+	userTracer := common.GetTracer(config.UserClientName, config.UserServiceAddress)
 	userTracerClient := opentracing.NewClientWrapper(userTracer)
 	// 用户
 	userMicroService := micro.NewService(
@@ -27,7 +28,7 @@ func InitRPC() {
 	// 用户服务调用实例
 	userService := pb.NewUserService(config.UserServiceName, userMicroService.Client())
 
-	taskTracer := wrappers.GetTracer(config.TaskClientName, config.TaskServiceAddress)
+	taskTracer := common.GetTracer(config.TaskClientName, config.TaskServiceAddress)
 	taskTracerClient := opentracing.NewClientWrapper(taskTracer)
 	// task
 	taskMicroService := micro.NewService(

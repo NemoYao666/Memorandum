@@ -17,7 +17,10 @@ import (
 func NewRouter(tracer opentracing.Tracer) *gin.Engine {
 	ginRouter := gin.Default()
 	//跨域
-	ginRouter.Use(middleware.Cors(), middleware.TracingMiddleware(tracer))
+	ginRouter.Use(middleware.Cors(),
+		middleware.TracingMiddleware(tracer),
+		middleware.PrometheusMiddleware())
+
 	store := cookie.NewStore([]byte("something-very-secret"))
 	ginRouter.Use(sessions.Sessions("mysession", store))
 	//http://127.0.0.1:4000/swagger/index.html
