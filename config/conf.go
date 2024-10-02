@@ -24,8 +24,18 @@ var (
 	EtcdHost string
 	EtcdPort string
 
-	UserServiceAddress string
-	TaskServiceAddress string
+	GateWayServiceName    string
+	GateWayServiceAddress string
+	UserServiceName       string
+	UserClientName        string
+	UserServiceAddress    string
+	TaskServiceName       string
+	TaskClientName        string
+	TaskServiceAddress    string
+
+	ZipkinHost string
+	ZipkinPort string
+	ZipkinUrl  string
 
 	RedisHost     string
 	RedisPort     string
@@ -42,6 +52,7 @@ func Init() {
 	LoadEtcd(file)
 	LoadRabbitMQ(file)
 	LoadServer(file)
+	LoadZipkin(file)
 	LoadRedisData(file)
 }
 
@@ -69,8 +80,20 @@ func LoadEtcd(file *ini.File) {
 }
 
 func LoadServer(file *ini.File) {
+	GateWayServiceName = file.Section("server").Key("GateWayServiceName").String()
+	GateWayServiceAddress = file.Section("server").Key("GateWayServiceAddress").String()
+	UserServiceName = file.Section("server").Key("UserServiceName").String()
+	UserClientName = file.Section("server").Key("UserClientName").String()
 	UserServiceAddress = file.Section("server").Key("UserServiceAddress").String()
+	TaskServiceName = file.Section("server").Key("TaskServiceName").String()
+	TaskClientName = file.Section("server").Key("TaskClientName").String()
 	TaskServiceAddress = file.Section("server").Key("TaskServiceAddress").String()
+}
+
+func LoadZipkin(file *ini.File) {
+	ZipkinHost = file.Section("zipkin").Key("ZipkinHost").String()
+	ZipkinPort = file.Section("zipkin").Key("ZipkinPort").String()
+	ZipkinUrl = file.Section("zipkin").Key("ZipkinUrl").String()
 }
 
 func LoadRedisData(file *ini.File) {

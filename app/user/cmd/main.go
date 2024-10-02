@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/go-micro/plugins/v4/registry/etcd"
+	"github.com/go-micro/plugins/v4/wrapper/trace/opentracing"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/registry"
+	"micro-todoList/app/gateway/wrappers"
 	"micro-todoList/app/user/repository/db/dao"
 	"micro-todoList/app/user/service"
 	"micro-todoList/config"
@@ -18,11 +20,17 @@ func main() {
 	etcdReg := etcd.NewRegistry(
 		registry.Addrs(fmt.Sprintf("%s:%s", config.EtcdHost, config.EtcdPort)),
 	)
+
+	// 初始化 Tracer
+	tracer := wrappers.GetTracer(config.UserServiceName, config.UserServiceAddress)
+	tracerHandler := opentracing.NewHandlerWrapper(tracer)
+
 	// 得到一个微服务实例
 	microService := micro.NewService(
-		micro.Name("rpcUserService"), // 微服务名字
+		micro.Name(config.UserServiceName), // 微服务名字
 		micro.Address(config.UserServiceAddress),
 		micro.Registry(etcdReg), // etcd注册件
+		micro.WrapHandler(tracerHandler),
 	)
 	// 结构命令行参数，初始化
 	microService.Init()

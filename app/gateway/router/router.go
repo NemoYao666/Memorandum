@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/opentracing/opentracing-go"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "micro-todoList/app/docs"
@@ -13,10 +14,10 @@ import (
 	"micro-todoList/app/gateway/middleware"
 )
 
-func NewRouter() *gin.Engine {
+func NewRouter(tracer opentracing.Tracer) *gin.Engine {
 	ginRouter := gin.Default()
 	//跨域
-	ginRouter.Use(middleware.Cors())
+	ginRouter.Use(middleware.Cors(), middleware.TracingMiddleware(tracer))
 	store := cookie.NewStore([]byte("something-very-secret"))
 	ginRouter.Use(sessions.Sessions("mysession", store))
 	//http://127.0.0.1:4000/swagger/index.html

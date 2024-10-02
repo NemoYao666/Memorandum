@@ -122,7 +122,9 @@ make run
 # win
 mysql
 # linux docker
-redis rabbitMQ 
+redis rabbitMQ etcd zipkin
+# linux server
+etcd-keeper
 ```
   
 ```shell
@@ -147,7 +149,10 @@ docker run -d \
 ```shell
 # etcd-keeper
 cd /opt/micro-todoList/etcdkeeper-v0.7.8
-./etcdkeeper -h 127.0.0.1 -p 8080
+./etcdkeeper -h 127.0.0.1 -p 8080 &
+# or
+cd /opt/micro-todoList
+./run_etcd.sh
 ```
 
 
