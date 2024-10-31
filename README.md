@@ -1,25 +1,20 @@
 # Memorandum
 # 简单备忘录
 
-基于Golang V1.21，Go-Micro v4，  
-服务发现使用etcd，gateway和各模块之间的rpc通信，  
-支持熔断机制，token验证，swagger文档，Zipkin链路追踪，Prometheus Grafana监控
+基于Golang V1.21，Go-Micro v4，  gateway和各模块之间的Protobuf RPC通信  
+支持限流熔断机制，JWT token验证，swagger API文档生成  
+基于CentOS7 Docker部署服务注册发现ETCD，ETCD Keeper，Zipkin链路追踪，Prometheus Grafana监控，Redis登陆缓存，RabbitMQ任务创建消息队列  
 
 ****
 
 # Running Environment
-## MacOS
-```shell
-# 1. 启动环境
-make env-up
-# 2. 运行服务
-make run
-```
+
 ## Win + Linux
-  
+  服务列表 与 WEB UI
 ```shell
 # win
-mysql
+mysql 
+swagger      http://127.0.0.1:4000/swagger/index.html
 # linux docker
 redis   
 rabbitMQ     http://127.0.0.1:15672
@@ -30,7 +25,33 @@ prometheus   http://127.0.0.1:9090/targets
 etcd-keeper  http://127.0.0.1:8080/etcdkeeper
 grafana      http://127.0.0.1:3000/login
 ```
-  
+
+  启动流程
+```shell
+# docker
+systemctl start docker # redis rabbitMQ auto start
+docker start # etcd_container_id
+docker start # zipkin_container_id
+```  
+
+```shell
+# etcd-keeper 
+cd /opt/micro-todoList/etcdkeeper-v0.7.8
+./etcdkeeper -h 127.0.0.1 -p 8080 &
+# or
+cd /opt/micro-todoList
+./run_etcd.sh
+```  
+
+```shell
+# prometheus 配置抓取路径
+cd /opt/prometheus
+gedit prometheus.yml  # web服务所在的IP
+docker start # prometheus_container_id
+# grafana
+systemctl start grafana-server.service
+```  
+  etcd docker run 备份
 ```shell
 # etcd
 docker run -d \
@@ -49,23 +70,6 @@ docker run -d \
   -e ETCD_AUTH_PASSWORD="todolist" \
   quay.io/coreos/etcd:v3.5.5
 ```
-  
-```shell
-# etcd-keeper 
-cd /opt/micro-todoList/etcdkeeper-v0.7.8
-./etcdkeeper -h 127.0.0.1 -p 8080 &
-# or
-cd /opt/micro-todoList
-./run_etcd.sh
-```  
-
-```shell
-# prometheus 配置抓取路径
-cd /opt/prometheus
-gedit prometheus.yml
-# grafana
-systemctl start grafana-server.service
-```  
   
 ****
 
