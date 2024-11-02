@@ -25,7 +25,7 @@ func main() {
 	// 初始化 Tracer
 	tracer := common.GetTracer(config.GateWayServiceName, config.GateWayServiceAddress)
 	// 初始化 Prometheus
-	common.PrometheusBoot(9094)
+	common.PrometheusBoot(config.PrometheusGateWayPath, config.PrometheusGateWayAddress)
 
 	// 创建微服务实例，使用gin暴露http接口并注册到etcd
 	server := web.NewService(

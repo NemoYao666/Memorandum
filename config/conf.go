@@ -35,7 +35,12 @@ var (
 
 	ZipkinUrl string
 
-	PrometheusHost string
+	PrometheusGateWayPath        string
+	PrometheusGateWayAddress     string
+	PrometheusUserServicePath    string
+	PrometheusUserServiceAddress string
+	PrometheusTaskServicePath    string
+	PrometheusTaskServiceAddress string
 
 	RedisHost     string
 	RedisPort     string
@@ -96,7 +101,13 @@ func LoadZipkin(file *ini.File) {
 }
 
 func LoadPrometheus(file *ini.File) {
-	PrometheusHost = file.Section("prometheus").Key("PrometheusHost").String()
+	PrometheusGateWayPath = file.Section("prometheus").Key("PrometheusGateWayPath").String()
+	PrometheusGateWayAddress = file.Section("prometheus").Key("PrometheusGateWayAddress").String()
+	PrometheusUserServicePath = file.Section("prometheus").Key("PrometheusUserServicePath").String()
+	PrometheusUserServiceAddress = file.Section("prometheus").Key("PrometheusUserServiceAddress").String()
+	PrometheusTaskServicePath = file.Section("prometheus").Key("PrometheusTaskServicePath").String()
+	PrometheusTaskServiceAddress = file.Section("prometheus").Key("PrometheusTaskServiceAddress").String()
+
 }
 
 func LoadRedisData(file *ini.File) {

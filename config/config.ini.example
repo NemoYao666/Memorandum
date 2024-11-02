@@ -36,7 +36,12 @@ TaskServiceAddress = 127.0.0.1:8083
 ZipkinUrl  = http://127.0.0.1:9411/api/v2/spans
 
 [prometheus]
-PrometheusHost = 0.0.0.0
+PrometheusGateWayPath = /metrics
+PrometheusGateWayAddress = 0.0.0.0:9094
+PrometheusUserServicePath = /metrics
+PrometheusUserServiceAddress = 0.0.0.0:9092
+PrometheusTaskServicePath = /metrics
+PrometheusTaskServiceAddress = 0.0.0.0:9093
 
 [redis]
 RedisHost = localhost

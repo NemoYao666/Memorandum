@@ -26,7 +26,7 @@ func main() {
 	tracer := common.GetTracer(config.UserServiceName, config.UserServiceAddress)
 	tracerHandler := opentracing.NewHandlerWrapper(tracer)
 	// 初始化 Prometheus
-	common.PrometheusBoot(9092)
+	common.PrometheusBoot(config.PrometheusUserServicePath, config.PrometheusUserServiceAddress)
 
 	// 得到一个微服务实例
 	microService := micro.NewService(
